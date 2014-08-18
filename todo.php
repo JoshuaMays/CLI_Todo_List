@@ -19,8 +19,7 @@ do {
 	// Get the input from user
 	// Use trim() to remove whitespace and newlines
 	// Use strtoupper() to accept lower case input
-	$input = trim(fgets(STDIN));
-	$input = strtoupper($input);
+	$input = strtoupper(trim(fgets(STDIN)));
 
 	// Check for actionable input
 	if ($input == 'N') {
