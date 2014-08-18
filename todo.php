@@ -7,6 +7,8 @@ $items = array();
 do {
 	// Iterate through list items
 	foreach ($items as $key => $item) {
+		// Increment $key so array starts at 1, not 0.
+		$key++;
 		// Display each item and a newline
 		echo "[{$key}] {$item}\n";
 	}
@@ -16,6 +18,7 @@ do {
 
 	// Get the input from user
 	// Use trim() to remove whitespace and newlines
+	// Use strtoupper() to accept lower case input
 	$input = trim(fgets(STDIN));
 	$input = strtoupper($input);
 
@@ -30,8 +33,9 @@ do {
 		echo 'Enter item number to remove: ';
 		// Get array key
 		$key = trim(fgets(STDIN));
-		// Remove from array
-		unset($items[$key]);
+		// Remove from array. Subtract 1 from key so
+		// the correct key=>value is removed.
+		unset($items[$key - 1]);
 	}
 // Exit when input is (Q)uit
 } while ($input != 'Q');
