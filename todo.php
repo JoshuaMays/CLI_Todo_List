@@ -37,13 +37,21 @@ function get_input($upper = FALSE)
 	return $upper ? $userInput = strtoupper($userInput) : $userInput;
 }
 
+// Provide menu of sort options to user
+function sort_menu() {
+	fwrite(STDOUT, '(A)-Z, (Z)-A, (O)rder Entered, (R)everse Order Entered' . PHP_EOL);
+	$input = get_input(TRUE);
+	return $input;
+
+}	
+
 // The loop!
 do {
     // Echo the list produced by the function
     echo list_items($items);
 
     // Show the menu options
-    echo '(N)ew item, (R)emove item, (Q)uit : ';
+    echo '(N)ew item, (R)emove item, (S)ort, (Q)uit : ';
 
     // Get the input from user
     // Use trim() to remove whitespace and newlines
@@ -65,7 +73,27 @@ do {
         // Remove from array
         unset($items[--$key]);
         $items = array_values($items);
+    
+    } elseif ($input == 'S') {
+    	// Load sort menu
+    	$sort_type = sort_menu();
+    		switch($sort_type) {
+    			case 'A':
+    				asort($items);
+    				break;
+    			case 'Z':
+    				arsort($items);
+    				break;
+    			case 'O':
+    				ksort($items);
+    				break;
+    			case 'R':
+    				krsort($items);
+    				break;
+    		}
+
     }
+
 // Exit when input is (Q)uit
 } while ($input != 'Q');
 
