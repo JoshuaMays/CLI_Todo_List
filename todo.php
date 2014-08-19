@@ -22,19 +22,19 @@ function list_items($list)
 // Get STDIN, strip whitespace and newlines, 
 // and convert to uppercase if $upper is true
 function get_input($upper = FALSE) 
-{
-    // // Return filtered STDIN input
-    // if ($upper) {
-    // 	$userInput = strtoupper(trim(fgets(STDIN)));
-    // 	return $userInput;
-    // }
-    // else {
-    // 	$userInput = trim(fgets(STDIN));
-    // 	return $userInput;
-    // }
+{	
+	$userInput = trim(fgets(STDIN));
+ //    // Return filtered STDIN input
+ //    if ($upper) {
+ //    	$userInput = strtoupper($userInput);
+ //    	return $userInput;
+ //    }
+ //    else {
+ //    	return $userInput;
+ //    }
 
 	// Ternary Version
-	$userInput = $upper ? $userInput = strtoupper(trim(fgets(STDIN))) : $userInput = trim(fgets(STDIN));
+	$userInput = $upper ? $userInput = strtoupper($userInput) : $userInput;
 	return $userInput;
 }
 
