@@ -34,8 +34,7 @@ function get_input($upper = FALSE)
  //    }
 
 	// Ternary Version
-	$userInput = $upper ? $userInput = strtoupper($userInput) : $userInput;
-	return $userInput;
+	return $upper ? $userInput = strtoupper($userInput) : $userInput;
 }
 
 // The loop!
