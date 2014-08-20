@@ -71,27 +71,29 @@ do {
     // Use trim() to remove whitespace and newlines
     $input = get_input(TRUE);
 
-    // Check for actionable input
-    if ($input == 'N') {
-        // Ask for entry
-        fwrite(STDOUT, 'Enter item: ');
-        // Add entry to list array
-        $items[] = get_input();
-
-
-    } elseif ($input == 'R') {
-        // Remove which item?
-        fwrite(STDOUT, 'Enter item number to remove: ');
-        // Get array key
-        $key = get_input();
-        // Remove from array
-        unset($items[--$key]);
-        $items = array_values($items);
-    
-    } elseif ($input == 'S') {
-        // Load sort menu
-        $items = sort_menu($items);
-        
+    // Check which menu option to run
+    switch($input) {
+        case 'N':
+            // Ask for entry
+            fwrite(STDOUT, 'Enter item: ');
+            // Add entry to list array
+            $items[] = get_input();
+            break;
+        case 'R':
+            // Remove which item?
+            fwrite(STDOUT, 'Enter item number to remove: ');
+            // Get array key
+            $key = get_input();
+            // Remove from array
+            unset($items[--$key]);
+            $items = array_values($items);
+            break;
+        case 'S':
+            // Load sort menu
+            $items = sort_menu($items);        
+            break;
+        default:
+            break;
     }
 
 // Exit when input is (Q)uit
