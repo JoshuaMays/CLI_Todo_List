@@ -76,8 +76,27 @@ do {
         case 'N':
             // Ask for entry
             fwrite(STDOUT, 'Enter item: ');
-            // Add entry to list array
-            $items[] = get_input();
+
+            $addItem = get_input();
+            if(empty($items)) {
+                array_push($items, $addItem);
+            }
+            else {
+                fwrite(STDOUT, 'Do you want to add this to' 
+                            .  'the (B)eginning or the (E)nd of the list?');
+                $begOrEnd = get_input(TRUE);
+                switch($begOrEnd) {
+                    case 'B':
+                        array_unshift($items, $addItem);
+                        break;
+                    case 'E':
+                        array_push($items, $addItem);
+                        break;
+                    default:
+                        array_push($items, $addItem);
+                        break;
+                }
+            }
             break;
         case 'R':
             // Remove which item?
@@ -92,6 +111,11 @@ do {
             // Load sort menu
             $items = sort_menu($items);        
             break;
+        case 'F':
+            array_shift($items);
+            break;
+        case 'L':
+            array_pop($items);
         default:
             break;
     }
