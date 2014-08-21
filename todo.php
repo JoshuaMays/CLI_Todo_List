@@ -78,14 +78,46 @@ function sort_menu($array) {
 
 }
 
-
+function save_file($items) {
+    // Ask user for path and filename.
+    fwrite(STDOUT, 'Please enter a path/filename for the file: ');
+    $filename = get_input();
+    if (file_exists($filename)) {
+        fwrite(STDOUT, 'Warning: This file already exists. Would you like to ' 
+                        . 'overwrite this file? (Y)es or (N)o: ');
+        $confirm = get_input(TRUE);
+        switch ($confirm) {
+            case 'Y':
+                $handle = fopen($filename, 'w');
+                foreach($items as $listItem) {
+                    fwrite($handle, PHP_EOL . $listItem);
+                }
+                fclose($handle);
+                fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);    
+                break;
+            case 'N':
+                fwrite(STDOUT, 'File was NOT saved.' . PHP_EOL);
+                break;
+            default:
+                fwrite(STDOUT, 'File was NOT saved.' . PHP_EOL);
+                break;
+        }
+    } else {
+        $handle = fopen($filename, 'a');
+        foreach($items as $listItem) {
+            fwrite($handle, PHP_EOL . $listItem);
+        }
+        fclose($handle);
+        fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);        
+    }
+}
 // The loop!
 do {
     // Echo the list produced by the function
     fwrite(STDOUT, list_items($items));
 
     // Show the menu options
-    fwrite(STDOUT, '(N)ew item, (R)emove item, (O)pen file, (S)ort, (Q)uit : ');
+    fwrite(STDOUT, '(N)ew item, (O)pen file, (R)emove item, (S)ort, S(A)ve, (Q)uit : ');
 
     // Get the input from user
     // Use trim() to remove whitespace and newlines
@@ -128,14 +160,18 @@ do {
             $items = array_values($items);
             break;
         case 'O':
+            // Open a file and add contents to list.
             fwrite(STDOUT, 'Please enter a path/filename: ');
             $filename = get_input();
-            // var_dump($fileName);
             $items = list_from_file($filename, $items);
             break;
         case 'S':
             // Load sort menu
             $items = sort_menu($items);        
+            break;
+        case 'A':
+            // Save list to a file.
+            save_file($items);
             break;
         case 'F':
             array_shift($items);
