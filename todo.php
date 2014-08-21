@@ -81,16 +81,19 @@ function sort_menu($array) {
 function save_file($items) {
     // Ask user for path and filename.
     fwrite(STDOUT, 'Please enter a path/filename for the file: ');
+    // Save filepath
     $filename = get_input();
+    // Check if file already exists or not.
     if (file_exists($filename)) {
-        fwrite(STDOUT, 'Warning: This file already exists. Would you like to ' 
-                        . 'overwrite this file? (Y)es or (N)o: ');
+        // Display warning if file exists, check if user wants to overwrite
+        fwrite(STDOUT, 'Warning: This file already exists. Would you like to' 
+                        . ' overwrite this file? (Y)es or (N)o: ');
         $confirm = get_input(TRUE);
         switch ($confirm) {
             case 'Y':
                 $handle = fopen($filename, 'w');
                 foreach($items as $listItem) {
-                    fwrite($handle, PHP_EOL . $listItem);
+                    fwrite($handle, $listItem . PHP_EOL);
                 }
                 fclose($handle);
                 fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);    
@@ -105,7 +108,7 @@ function save_file($items) {
     } else {
         $handle = fopen($filename, 'a');
         foreach($items as $listItem) {
-            fwrite($handle, PHP_EOL . $listItem);
+            fwrite($handle, $listItem . PHP_EOL);
         }
         fclose($handle);
         fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);        
