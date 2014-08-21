@@ -29,6 +29,26 @@ function get_input($upper = FALSE)
     return $upper ? $userInput = strtoupper($userInput) : $userInput;
 }
 
+function list_from_file($filename, $array) {
+    // Open file, save content of file to a string $content and close the file.
+    $handle = fopen($filename, 'r');
+    $content = trim(fread($handle, filesize($filename)));
+    fclose($handle);
+
+    // Create an array from the string $content.
+    $list = explode("\n", $content);
+
+    foreach($list as $item) {
+        // Remove first item from $list array and save its value to $addItemFromFile
+        $addItemFromFile = array_shift($list);
+
+        // Push each removed item onto the $array list
+        array_push($array, $addItemFromFile);
+    }
+    // Return the newly edited array outside of the function.
+    return $array;
+}
+
 function sort_menu($array) {
     // Give user new menu options for sort type
     fwrite(STDOUT, '(A)-Z, (Z)-A, (O)rder Entered, (R)everse Order Entered' . PHP_EOL);
@@ -65,7 +85,7 @@ do {
     fwrite(STDOUT, list_items($items));
 
     // Show the menu options
-    fwrite(STDOUT, '(N)ew item, (R)emove item, (S)ort, (Q)uit : ');
+    fwrite(STDOUT, '(N)ew item, (R)emove item, (O)pen file, (S)ort, (Q)uit : ');
 
     // Get the input from user
     // Use trim() to remove whitespace and newlines
@@ -106,6 +126,12 @@ do {
             // Remove from array
             unset($items[--$key]);
             $items = array_values($items);
+            break;
+        case 'O':
+            fwrite(STDOUT, 'Please enter a path/filename: ');
+            $filename = get_input();
+            // var_dump($fileName);
+            $items = list_from_file($filename, $items);
             break;
         case 'S':
             // Load sort menu
