@@ -59,15 +59,19 @@ function sort_menu($array) {
     // Test user input to match it with a sort type
     switch($input) {
         case 'A':
+            // Sort a-z
             asort($array);
             break;
         case 'Z':
+            // Sort z-a
             arsort($array);
             break;
         case 'O':
+            // Sort the keys
             ksort($array);
             break;
         case 'R':
+            // Reverse sort the keys
             krsort($array);
             break;    
         default:
@@ -90,27 +94,38 @@ function save_file($items) {
                         . ' overwrite this file? (Y)es or (N)o: ');
         $confirm = get_input(TRUE);
         switch ($confirm) {
+            // If user does want to overwrite the file:
             case 'Y':
+                // Open the file and erase the content.
                 $handle = fopen($filename, 'w');
+
+                // Loop through the list and write each line to the file.
                 foreach($items as $listItem) {
                     fwrite($handle, $listItem . PHP_EOL);
                 }
                 fclose($handle);
+                // Confirm file save.
                 fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);    
                 break;
+            // If user does not want to overwrite the file:
             case 'N':
-                fwrite(STDOUT, 'File was NOT saved.' . PHP_EOL);
+                // User chose to cancel the file save.
+                fwrite(STDOUT, 'File save has been cancelled.' . PHP_EOL);
                 break;
             default:
-                fwrite(STDOUT, 'File was NOT saved.' . PHP_EOL);
+                // User input did not match either Y or N, cancel the file save.
+                fwrite(STDOUT, 'File save has been cancelled.' . PHP_EOL);
                 break;
         }
     } else {
+        // File does not exist, create a new file.
         $handle = fopen($filename, 'a');
         foreach($items as $listItem) {
+            // Write each list item to the new file.
             fwrite($handle, $listItem . PHP_EOL);
         }
         fclose($handle);
+        // Confirm file has been saved.
         fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);        
     }
 }
@@ -177,9 +192,11 @@ do {
             save_file($items);
             break;
         case 'F':
+            // Remove first item on the list
             array_shift($items);
             break;
         case 'L':
+            // Remove last item on the list
             array_pop($items);
         default:
             break;
