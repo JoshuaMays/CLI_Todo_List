@@ -87,46 +87,52 @@ function save_file($items) {
     fwrite(STDOUT, 'Please enter a path/filename for the file: ');
     // Save filepath
     $filename = get_input();
-    // Check if file already exists or not.
-    if (file_exists($filename)) {
-        // Display warning if file exists, check if user wants to overwrite
-        fwrite(STDOUT, 'Warning: This file already exists. Would you like to' 
-                        . ' overwrite this file? (Y)es or (N)o: ');
-        $confirm = get_input(TRUE);
-        switch ($confirm) {
-            // If user does want to overwrite the file:
-            case 'Y':
-                // Open the file and erase the content.
-                $handle = fopen($filename, 'w');
+    // Make sure that the user entered a path/filename
+    if ($filename) {
+        
+        // Check if file already exists or not.
+        if (file_exists($filename)) {
+            // Display warning if file exists, check if user wants to overwrite
+            fwrite(STDOUT, 'Warning: This file already exists. Would you like to' 
+                            . ' overwrite this file? (Y)es or (N)o: ');
+            $confirm = get_input(TRUE);
+            switch ($confirm) {
+                // If user does want to overwrite the file:
+                case 'Y':
+                    // Open the file and erase the content.
+                    $handle = fopen($filename, 'w');
 
-                // Loop through the list and write each line to the file.
-                foreach($items as $listItem) {
-                    fwrite($handle, $listItem . PHP_EOL);
-                }
-                fclose($handle);
-                // Confirm file save.
-                fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);    
-                break;
-            // If user does not want to overwrite the file:
-            case 'N':
-                // User chose to cancel the file save.
-                fwrite(STDOUT, 'File save has been cancelled.' . PHP_EOL);
-                break;
-            default:
-                // User input did not match either Y or N, cancel the file save.
-                fwrite(STDOUT, 'File save has been cancelled.' . PHP_EOL);
-                break;
+                    // Loop through the list and write each line to the file.
+                    foreach($items as $listItem) {
+                        fwrite($handle, $listItem . PHP_EOL);
+                    }
+                    fclose($handle);
+                    // Confirm file save.
+                    fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);    
+                    break;
+                // If user does not want to overwrite the file:
+                case 'N':
+                    // User chose to cancel the file save.
+                    fwrite(STDOUT, 'File save has been cancelled.' . PHP_EOL);
+                    break;
+                default:
+                    // User input did not match either Y or N, cancel the file save.
+                    fwrite(STDOUT, 'File save has been cancelled.' . PHP_EOL);
+                    break;
+            }
+        } else {
+            // File does not exist, create a new file.
+            $handle = fopen($filename, 'a');
+            foreach($items as $listItem) {
+                // Write each list item to the new file.
+                fwrite($handle, $listItem . PHP_EOL);
+            }
+            fclose($handle);
+            // Confirm file has been saved.
+            fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);        
         }
-    } else {
-        // File does not exist, create a new file.
-        $handle = fopen($filename, 'a');
-        foreach($items as $listItem) {
-            // Write each list item to the new file.
-            fwrite($handle, $listItem . PHP_EOL);
-        }
-        fclose($handle);
-        // Confirm file has been saved.
-        fwrite(STDOUT, 'Your file has been saved.' . PHP_EOL);        
+    } else { // User did not enter a file name.
+        fwrite(STDOUT, 'You did not enter a filepath/name. SHAME on you.' . PHP_EOL);
     }
 }
 // The loop!
@@ -153,7 +159,7 @@ do {
             }
             else {
                 fwrite(STDOUT, 'Do you want to add this to' 
-                            .  'the (B)eginning or the (E)nd of the list?');
+                            .  ' the (B)eginning or the (E)nd of the list?');
                 $begOrEnd = get_input(TRUE);
                 switch($begOrEnd) {
                     case 'B':
