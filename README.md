@@ -1,3 +1,3 @@
 # TODO LIST
-#
-# CLI version of a simple todo list.
+
+CLI version of a simple todo list.
