@@ -25,10 +25,11 @@ function get_input($upper = FALSE)
 {   
     $userInput = trim(fgets(STDIN));
 
-    // Ternary Version
+    // Return input as either UPPERCASE or as user typed
     return $upper ? $userInput = strtoupper($userInput) : $userInput;
 }
 
+// Function to read contents of file and list them as an array.
 function list_from_file($filename, $array) {
     // Open file, save content of file to a string $content and close the file.
     $handle = fopen($filename, 'r');
@@ -49,6 +50,7 @@ function list_from_file($filename, $array) {
     return $array;
 }
 
+// Function to display sorting options menu
 function sort_menu($array) {
     // Give user new menu options for sort type
     fwrite(STDOUT, '(A)-Z, (Z)-A, (O)rder Entered, (R)everse Order Entered' . PHP_EOL);
@@ -77,11 +79,12 @@ function sort_menu($array) {
         default:
             break;
     }
-    // Return new, sorted array outside of function scope.
+    // Return sorted array.
     return $array;
 
 }
 
+// Function to save the todo list to a file
 function save_file($items) {
     // Ask user for path and filename.
     fwrite(STDOUT, 'Please enter a path/filename for the file: ');
@@ -120,8 +123,8 @@ function save_file($items) {
                     fwrite(STDOUT, 'File save has been cancelled.' . PHP_EOL);
                     break;
             }
+        // File does not exist, create a new file.
         } else {
-            // File does not exist, create a new file.
             $handle = fopen($filename, 'a');
             foreach($items as $listItem) {
                 // Write each list item to the new file.
@@ -135,7 +138,7 @@ function save_file($items) {
         fwrite(STDOUT, 'You did not enter a filepath/name. SHAME on you.' . PHP_EOL);
     }
 }
-// The loop!
+
 do {
     // Echo the list produced by the function
     fwrite(STDOUT, list_items($items));
